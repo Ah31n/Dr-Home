@@ -1,0 +1,58 @@
+{%- comment -%}
+  Cart drawer — a native <dialog> so focus trapping and Escape-to-close come
+  free. Falls back to the /cart page entirely when JS is unavailable.
+{%- endcomment -%}
+<dialog class="cart-drawer" id="CartDrawer" aria-labelledby="CartDrawer-Title" data-cart-drawer>
+  <div class="cart-drawer__head">
+    <h2 id="CartDrawer-Title">{{ 'cart.headingly' | t }}</h2>
+    <button type="button" class="icon-btn" data-cart-drawer-close aria-label="{{ 'accessibility.close' | t }}">
+      {% render 'icon', icon: 'close' %}
+    </button>
+  </div>
+
+  <div class="cart-drawer__body" data-cart-drawer-body>
+    {%- if cart.item_count > 0 -%}
+      {%- for item in cart.items -%}
+        <div class="cart-drawer__item">
+          <a href="{{ item.url }}" tabindex="-1" aria-hidden="true">
+            {%- if item.image -%}
+              <img src="{{ item.image | image_url: width: 144 }}" width="72" height="72" loading="lazy" alt="">
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </a>
+          <div>
+            <a class="cart-drawer__item-title" href="{{ item.url }}">{{ item.product.title | escape }}</a>
+            {%- unless item.product.has_only_default_variant -%}
+              <p class="cart-drawer__item-variant">{{ item.variant.title }}</p>
+            {%- endunless -%}
+            {%- render 'quantity-input', product: item.product, name: 'updates[]', value: item.quantity -%}
+          </div>
+          <div>
+            {{ item.final_line_price | money }}
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <div class="cart-drawer__empty">
+        <p class="h3">{{ 'cart.empty_title' | t }}</p>
+        <p class="lede">{{ 'cart.empty_text' | t }}</p>
+        <a class="btn btn--secondary" href="{{ routes.all_products_collection_url }}">{{ 'cart.continue_shopping' | t }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if cart.item_count > 0 -%}
+    <div class="cart-drawer__foot">
+      <div class="cart-drawer__subtotal">
+        <span>{{ 'cart.subtotal' | t }}</span>
+        <span data-cart-subtotal>{{ cart.total_price | money }}</span>
+      </div>
+      <p class="cart-drawer__note">{{ 'cart.taxes_and_shipping' | t }}</p>
+      <form method="post" action="{{ routes.cart_url }}" data-cart-form>
+        <button type="submit" name="checkout" class="btn btn--accent">{{ 'cart.checkout' | t }}</button>
+      </form>
+      <a class="cart-drawer__view text-link" href="{{ routes.cart_url }}">{{ 'cart.view_cart' | t }} {% render 'icon', icon: 'arrow-right' %}</a>
+    </div>
+  {%- endif -%}
+</dialog>

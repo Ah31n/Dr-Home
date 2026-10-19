@@ -1,0 +1,170 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Dr Home",
+    "theme_version": "1.0.0",
+    "theme_author": "Dr Home",
+    "theme_documentation_url": "https://github.com/Ah31n/Dr-Home",
+    "theme_support_url": "https://github.com/Ah31n/Dr-Home"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background",
+        "default": "#F6F4EF"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Card surface",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_ink",
+        "label": "Text",
+        "default": "#171512"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent",
+        "default": "#B4551F"
+      },
+      {
+        "type": "color",
+        "id": "color_sale",
+        "label": "Sale price",
+        "default": "#8A2D1B"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_heading_font",
+        "label": "Headings",
+        "default": "playfair_display_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "label": "Body",
+        "default": "assistant_n4"
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "label": "Page width",
+        "min": 1100,
+        "max": 1500,
+        "step": 20,
+        "unit": "px",
+        "default": 1280
+      },
+      {
+        "type": "range",
+        "id": "section_spacing",
+        "label": "Section spacing",
+        "min": 48,
+        "max": 120,
+        "step": 8,
+        "unit": "px",
+        "default": 88
+      }
+    ]
+  },
+  {
+    "name": "Product cards",
+    "settings": [
+      {
+        "type": "select",
+        "id": "card_image_ratio",
+        "label": "Image ratio",
+        "options": [
+          { "value": "square", "label": "Square" },
+          { "value": "portrait", "label": "Portrait (4:5)" }
+        ],
+        "default": "square"
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_vendor",
+        "label": "Show product vendor",
+        "info": "Only useful once the vendor field holds the real brand.",
+        "default": false
+      }
+    ]
+  },
+  {
+    "name": "Motion",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "motion_reveal_enabled",
+        "label": "Reveal sections as they enter the viewport",
+        "default": true,
+        "info": "Always disabled automatically for visitors who prefer reduced motion."
+      },
+      {
+        "type": "checkbox",
+        "id": "motion_stage_tilt",
+        "label": "Pointer tilt on product stages",
+        "default": true,
+        "info": "Subtle depth effect on precise pointers only."
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "cart_drawer_enabled",
+        "label": "Open the cart in a drawer",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_note",
+        "label": "Enable order notes",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      { "type": "text", "id": "social_instagram_link", "label": "Instagram", "info": "https://instagram.com/shop" },
+      { "type": "text", "id": "social_facebook_link", "label": "Facebook", "info": "https://facebook.com/shop" },
+      { "type": "text", "id": "social_tiktok_link", "label": "TikTok", "info": "https://tiktok.com/@shop" }
+    ]
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      { "type": "image_picker", "id": "favicon", "label": "Favicon", "info": "Will be scaled down to 32 × 32px" },
+      { "type": "image_picker", "id": "logo", "label": "Logo image" },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "label": "Logo width",
+        "min": 80,
+        "max": 260,
+        "step": 10,
+        "unit": "px",
+        "default": 140
+      }
+    ]
+  }
+]

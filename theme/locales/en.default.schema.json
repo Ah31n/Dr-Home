@@ -1,0 +1,160 @@
+{
+  "settings_schema": {
+    "colors": {
+      "name": "Colors",
+      "settings": {
+        "color_background": { "label": "Background" },
+        "color_surface": { "label": "Card surface" },
+        "color_ink": { "label": "Text" },
+        "color_accent": { "label": "Accent" },
+        "color_sale": { "label": "Sale price" }
+      }
+    },
+    "typography": {
+      "name": "Typography",
+      "settings": {
+        "type_heading_font": { "label": "Headings" },
+        "type_body_font": { "label": "Body" }
+      }
+    },
+    "layout": {
+      "name": "Layout",
+      "settings": {
+        "page_width": { "label": "Page width" },
+        "section_spacing": { "label": "Section spacing" }
+      }
+    },
+    "product_cards": {
+      "name": "Product cards",
+      "settings": {
+        "card_image_ratio": { "label": "Image ratio" },
+        "card_show_vendor": { "label": "Show product vendor" }
+      }
+    },
+    "motion": {
+      "name": "Motion",
+      "settings": {
+        "motion_reveal_enabled": { "label": "Reveal sections as they enter the viewport" },
+        "motion_stage_tilt": { "label": "Pointer tilt on product stages" }
+      }
+    },
+    "cart": {
+      "name": "Cart",
+      "settings": {
+        "cart_drawer_enabled": { "label": "Open the cart in a drawer" },
+        "cart_show_note": { "label": "Enable order notes" }
+      }
+    },
+    "social_media": {
+      "name": "Social media",
+      "settings": {
+        "social_instagram_link": { "label": "Instagram" },
+        "social_facebook_link": { "label": "Facebook" },
+        "social_tiktok_link": { "label": "TikTok" }
+      }
+    },
+    "brand": {
+      "name": "Brand",
+      "settings": {
+        "favicon": { "label": "Favicon" },
+        "logo": { "label": "Logo image" },
+        "logo_width": { "label": "Logo width" }
+      }
+    }
+  },
+  "sections": {
+    "announcement-bar": {
+      "name": "Announcement bar",
+      "settings": {
+        "text": { "label": "Text" },
+        "link": { "label": "Link" }
+      }
+    },
+    "header": {
+      "name": "Header",
+      "settings": {
+        "menu": { "label": "Menu" },
+        "sticky_header": { "label": "Sticky header" }
+      }
+    },
+    "hero-stage": {
+      "name": "Hero stage",
+      "settings": {
+        "eyebrow": { "label": "Eyebrow text" },
+        "heading": { "label": "Heading" },
+        "text": { "label": "Subheading" },
+        "product": { "label": "Featured product" },
+        "button_label": { "label": "Button label" },
+        "show_stage_badge": { "label": "Show availability badge" }
+      },
+      "blocks": {
+        "guarantee_note": { "name": "Caption" }
+      }
+    },
+    "featured-collection": {
+      "name": "Featured collection",
+      "settings": {
+        "eyebrow": { "label": "Eyebrow text" },
+        "heading": { "label": "Heading" },
+        "collection": { "label": "Collection" },
+        "products_to_show": { "label": "Products to show" },
+        "show_view_all": { "label": "Show \"View all\" link" }
+      }
+    },
+    "depth-banner": {
+      "name": "Depth banner",
+      "settings": {
+        "image": { "label": "Image" },
+        "eyebrow": { "label": "Eyebrow text" },
+        "heading": { "label": "Heading" },
+        "text": { "label": "Text" },
+        "button_label": { "label": "Button label" },
+        "button_link": { "label": "Button link" }
+      }
+    },
+    "rich-text": {
+      "name": "Rich text",
+      "settings": {
+        "eyebrow": { "label": "Eyebrow text" },
+        "heading": { "label": "Heading" },
+        "text": { "label": "Text" }
+      }
+    },
+    "footer": {
+      "name": "Footer",
+      "settings": {
+        "about_heading": { "label": "About heading" },
+        "about_text": { "label": "About text" },
+        "show_powered_by": { "label": "Show \"Powered by Shopify\"" }
+      },
+      "blocks": {
+        "menu": { "name": "Menu" },
+        "text": { "name": "Text" }
+      }
+    },
+    "main-product": {
+      "name": "Product",
+      "settings": {
+        "show_type": { "label": "Show product type" },
+        "show_sku": { "label": "Show SKU" },
+        "enable_sticky_buy": { "label": "Stick the buy panel while scrolling" },
+        "gallery_style": { "label": "Gallery layout" }
+      }
+    },
+    "main-collection": {
+      "name": "Collection page",
+      "settings": {
+        "products_per_page": { "label": "Products per page" },
+        "show_sorting": { "label": "Enable sorting" },
+        "show_collection_description": { "label": "Show collection description" }
+      }
+    },
+    "main-cart": {
+      "name": "Cart page",
+      "settings": {
+        "show_recommendations": { "label": "Empty-cart product picks" },
+        "recommendations_collection": { "label": "Collection for empty-cart picks" }
+      }
+    }
+  }
+}

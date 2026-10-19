@@ -1,0 +1,53 @@
+{
+  "current": {
+    "color_background": "#F6F4EF",
+    "color_surface": "#FFFFFF",
+    "color_ink": "#171512",
+    "color_accent": "#B4551F",
+    "color_sale": "#8A2D1B",
+    "type_heading_font": "playfair_display_n4",
+    "type_body_font": "assistant_n4",
+    "page_width": 1280,
+    "section_spacing": 88,
+    "card_image_ratio": "square",
+    "card_show_vendor": false,
+    "motion_reveal_enabled": true,
+    "motion_stage_tilt": true,
+    "cart_drawer_enabled": true,
+    "cart_show_note": true,
+    "social_instagram_link": "",
+    "social_facebook_link": "",
+    "social_tiktok_link": "",
+    "logo_width": 140,
+    "sections": {
+      "header-group": {
+        "type": "header-group",
+        "sections": {
+          "announcement-bar": {
+            "type": "announcement-bar",
+            "settings": {
+              "text": "",
+              "link": ""
+            }
+          },
+          "header": {
+            "type": "header",
+            "settings": {
+              "menu": "main-menu",
+              "sticky_header": true
+            }
+          }
+        }
+      },
+      "footer-group": {
+        "type": "footer-group",
+        "sections": {
+          "footer": {
+            "type": "footer",
+            "settings": {}
+          }
+        }
+      }
+    }
+  }
+}

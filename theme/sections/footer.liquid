@@ -1,0 +1,88 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="page-width">
+    <div class="site-footer__main">
+      <div class="site-footer__brand">
+        <a href="{{ routes.root_url }}" class="site-header__logo" style="--logo-width: 160px;" aria-label="{{ shop.name }}">
+          {%- if settings.logo != blank -%}
+            {{ settings.logo | image_url: width: 520 | image_tag: width: 160, alt: shop.name }}
+          {%- else -%}
+            <span class="wordmark">{{ shop.name | split: ' ' | first }}<em>.</em></span>
+          {%- endif -%}
+        </a>
+        <div class="site-footer__about rte">{{ section.settings.about_text }}</div>
+      </div>
+
+      {%- for block in section.blocks -%}
+        <div class="site-footer__col" {{ block.shopify_attributes }}>
+          {%- case block.type -%}
+            {%- when 'menu' -%}
+              <h3>{{ block.settings.heading | escape }}</h3>
+              <ul>
+                {%- for link in block.settings.menu.links -%}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            {%- when 'text' -%}
+              <h3>{{ block.settings.heading | escape }}</h3>
+              <div class="rte">{{ block.settings.text }}</div>
+          {%- endcase -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="site-footer__bottom">
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ 'footer.all_rights' | t }}</span>
+
+      <div class="site-footer__social">
+        {%- if settings.social_instagram_link != blank -%}
+          <a class="icon-btn" href="{{ settings.social_instagram_link }}" aria-label="Instagram" rel="noopener" target="_blank">{% render 'icon', icon: 'instagram' %}</a>
+        {%- endif -%}
+        {%- if settings.social_facebook_link != blank -%}
+          <a class="icon-btn" href="{{ settings.social_facebook_link }}" aria-label="Facebook" rel="noopener" target="_blank">{% render 'icon', icon: 'facebook' %}</a>
+        {%- endif -%}
+        {%- if settings.social_tiktok_link != blank -%}
+          <a class="icon-btn" href="{{ settings.social_tiktok_link }}" aria-label="TikTok" rel="noopener" target="_blank">{% render 'icon', icon: 'tiktok' %}</a>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.show_powered_by -%}
+        <span>{{ powered_by_link }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "text", "id": "about_heading", "label": "About heading", "default": "About" },
+    { "type": "richtext", "id": "about_text", "label": "About text", "default": "<p>Dr Home curates practical home appliances and presents them with clarity.</p>" },
+    { "type": "checkbox", "id": "show_powered_by", "label": "Show \"Powered by Shopify\"", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Shop" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Text" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Share store details or contact information.</p>" }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "menu", "settings": { "heading": "Shop" } },
+      { "type": "menu", "settings": { "heading": "Support" } }
+    ]
+  }
+}
+{% endschema %}

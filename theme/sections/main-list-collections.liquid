@@ -1,0 +1,30 @@
+<div class="page-width section">
+  <h1 class="h1" data-reveal>{{ 'footer.shop' | t }}</h1>
+
+  <ul class="product-grid" style="margin-top: 34px;">
+    {%- for collection in collections -%}
+      <li class="card" data-reveal>
+        <a class="card__link" href="{{ collection.url }}">
+          <div class="card__media card__media--portrait">
+            {%- if collection.featured_image -%}
+              <img src="{{ collection.featured_image | image_url: width: 640 }}" width="640" height="800" loading="lazy" alt="{{ collection.title | escape }}">
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          <div class="card__info">
+            <h3 class="card__title">{{ collection.title | escape }}</h3>
+            <p class="collection-count">{{ 'collections.general.products_count' | t: count: collection.products_count }}</p>
+          </div>
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+</div>
+
+{% schema %}
+{
+  "name": "Collections list",
+  "settings": []
+}
+{% endschema %}

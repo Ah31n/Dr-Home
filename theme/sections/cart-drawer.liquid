@@ -1,0 +1,13 @@
+{%- comment -%}
+  Section wrapper so the drawer contents can be refreshed via the
+  Section Rendering API (?sections=cart-drawer). Inner markup lives in the
+  cart-drawer snippet.
+{%- endcomment -%}
+{% render 'cart-drawer' %}
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "settings": []
+}
+{% endschema %}

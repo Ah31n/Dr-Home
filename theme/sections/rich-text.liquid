@@ -1,0 +1,25 @@
+<section class="section">
+  <div class="page-width rich-text" data-reveal>
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="eyebrow" style="justify-content: center;">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="h2">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}
+      <div class="lede rte">{{ section.settings.text }}</div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Share brand information or store policies here.</p>" }
+  ],
+  "presets": [{ "name": "Rich text" }]
+}
+{% endschema %}

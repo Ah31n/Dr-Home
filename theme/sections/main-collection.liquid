@@ -1,0 +1,75 @@
+{%- liquid
+  assign per_page = section.settings.products_per_page | default: 12
+-%}
+
+<div class="collection-head page-width" data-reveal>
+  <p class="eyebrow">{{ 'footer.shop' | t }}</p>
+  <h1 class="h1">{{ collection.title | escape }}</h1>
+  {%- if section.settings.show_collection_description and collection.description != blank -%}
+    <div class="lede rte">{{ collection.description }}</div>
+  {%- endif -%}
+</div>
+
+<div class="collection-grid page-width">
+  {%- if section.settings.show_sorting or collection.products_count > 0 -%}
+    <div class="collection-toolbar">
+      <p class="collection-count">{{ 'collections.general.products_count' | t: count: collection.products_count }}</p>
+
+      {%- if section.settings.show_sorting -%}
+        <form class="select" method="get" data-sort-form>
+          <label class="visually-hidden" for="SortBy">{{ 'collections.sorting.by' | t }}</label>
+          <select name="sort_by" id="SortBy" data-sort-select>
+            {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+            <option value="manual" {% if current_sort == 'manual' %}selected{% endif %}>{{ 'collections.sorting.featured' | t }}</option>
+            <option value="best-selling" {% if current_sort == 'best-selling' %}selected{% endif %}>{{ 'collections.sorting.best_selling' | t }}</option>
+            <option value="title-ascending" {% if current_sort == 'title-ascending' %}selected{% endif %}>{{ 'collections.sorting.az_and_za' | t }}</option>
+            <option value="price-ascending" {% if current_sort == 'price-ascending' %}selected{% endif %}>{{ 'collections.sorting.price_and_date' | t }}</option>
+          </select>
+          {% render 'icon', icon: 'chevron-down' %}
+          <noscript><button type="submit" class="btn btn--secondary btn--small">{{ 'collections.sorting.by' | t }}</button></noscript>
+        </form>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- paginate collection.products by per_page -%}
+    {%- if collection.products.size > 0 -%}
+      <ul class="product-grid">
+        {%- for product in collection.products -%}
+          {% render 'product-card', product: product, lazy: forloop.index0 | at_least: 4 %}
+        {%- endfor -%}
+      </ul>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="pagination" aria-label="{{ 'general.pagination.label' | t }}">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}">{% render 'icon', icon: 'chevron-left' %}</a>
+          {%- endif -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}">{{ part.title }}</a>
+            {%- else -%}
+              <span {% if part.title == paginate.current_page %}aria-current="page"{% endif %}>{{ part.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t }}">{% render 'icon', icon: 'chevron-right' %}</a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- else -%}
+      <p class="lede">{{ 'collections.general.no_matches' | t }}</p>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+{% schema %}
+{
+  "name": "Collection page",
+  "settings": [
+    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 8, "max": 24, "step": 4, "default": 12 },
+    { "type": "checkbox", "id": "show_collection_description", "label": "Show collection description", "default": true },
+    { "type": "checkbox", "id": "show_sorting", "label": "Enable sorting", "default": true }
+  ]
+}
+{% endschema %}
