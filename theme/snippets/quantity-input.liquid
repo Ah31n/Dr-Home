@@ -1,0 +1,27 @@
+{%- comment -%}
+  Quantity selector with keyboard-accessible stepper buttons.
+  Accepts: product (for max inventory), name (input name), value
+{%- endcomment -%}
+{%- liquid
+  assign qty_name = name | default: 'quantity'
+  assign qty_value = value | default: 1
+-%}
+<div class="quantity" data-quantity>
+  <button type="button" class="quantity__button" name="minus" aria-label="{{ 'products.product.quantity.decrease' | t }}" data-quantity-minus>
+    {% render 'icon', icon: 'minus' %}
+  </button>
+  <input
+    type="number"
+    inputmode="numeric"
+    name="{{ qty_name }}"
+    value="{{ qty_value }}"
+    min="1"
+    {% if product and product.selected_or_first_available_variant.quantity_rule.max %}
+      max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
+    {% endif %}
+    aria-label="{{ 'products.product.quantity.label' | t }}"
+  >
+  <button type="button" class="quantity__button" name="plus" aria-label="{{ 'products.product.quantity.increase' | t }}" data-quantity-plus>
+    {% render 'icon', icon: 'plus' %}
+  </button>
+</div>

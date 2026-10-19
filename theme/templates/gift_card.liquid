@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>{{ 'gift_cards.issued.title' | t: gift_card: gift_card.title }} &mdash; {{ shop.name }}</title>
+    {{ content_for_header }}
+    {{ 'base.css' | stylesheet_tag }}
+    <style>
+      .gift-card { max-width: 480px; margin-inline: auto; padding: 48px 20px; text-align: center; }
+      .gift-card__code {
+        font-family: ui-monospace, monospace;
+        font-size: 1.3rem;
+        letter-spacing: 0.08em;
+        border: 1px dashed var(--color-line);
+        border-radius: 14px;
+        padding: 18px;
+        margin: 20px 0;
+        background: var(--color-surface);
+      }
+      .gift-card__balance { font-size: 2rem; font-weight: 700; }
+    </style>
+  </head>
+  <body>
+    <main class="gift-card">
+      <p class="eyebrow" style="justify-content: center;">{{ shop.name }}</p>
+      <h1 class="h1">Gift card</h1>
+      <p class="gift-card__balance">{{ gift_card.initial_value | money }}</p>
+      {%- if gift_card.pass_url -%}
+        <a href="{{ gift_card.pass_url }}"><img src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}" width="120" alt="Add to Apple Wallet"></a>
+      {%- endif -%}
+
+      {%- if gift_card.enabled == false or gift_card.expired -%}
+        <p class="form-message form-message--error">This gift card is no longer active.</p>
+      {%- endif -%}
+
+      <p class="gift-card__code">{{ gift_card.code | format_code }}</p>
+      <p class="lede">Use this code at checkout.</p>
+      <a class="btn btn--primary" href="{{ shop.url }}" target="_blank" rel="noopener">Visit store</a>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-stage",
+      "settings": {
+        "eyebrow": "Appliances for modern living",
+        "heading": "Everyday tools, presented with clarity.",
+        "text": "A compact range of home appliances — live prices, honest product views, and a straightforward path to checkout.",
+        "button_label": "Shop now",
+        "show_stage_badge": true
+      }
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "The shop",
+        "heading": "Featured appliances",
+        "products_to_show": 4,
+        "show_view_all": true
+      }
+    },
+    "banner": {
+      "type": "depth-banner",
+      "settings": {
+        "eyebrow": "Garment care",
+        "heading": "Tools that earn their place.",
+        "text": "A tight, deliberate range — nothing more than what a home actually uses."
+      }
+    },
+    "rich": {
+      "type": "rich-text",
+      "settings": {
+        "heading": "Dr Home",
+        "text": "<p>Practical appliances, presented honestly. Product facts, prices, and availability come directly from our store — nothing invented, nothing overstated.</p>"
+      }
+    }
+  },
+  "order": ["hero", "featured", "banner", "rich"]
+}

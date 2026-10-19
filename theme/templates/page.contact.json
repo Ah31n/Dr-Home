@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": { "type": "main-page", "settings": {} },
+    "contact": {
+      "type": "rich-text",
+      "settings": {
+        "heading": "Write to us",
+        "text": "<p>Use the contact form on this page — we read every message.</p>"
+      }
+    }
+  },
+  "order": ["main", "contact"]
+}

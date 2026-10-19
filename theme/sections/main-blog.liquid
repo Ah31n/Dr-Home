@@ -1,0 +1,49 @@
+<div class="page-width section">
+  <h1 class="h1" data-reveal>{{ blog.title | escape }}</h1>
+
+  {%- paginate blog.articles by 9 -%}
+    {%- if blog.articles.size > 0 -%}
+      <ul class="product-grid" style="margin-top: 34px;">
+        {%- for article in blog.articles -%}
+          <li class="card" data-reveal>
+            <a class="card__link" href="{{ article.url }}">
+              <div class="card__media card__media--portrait">
+                {%- if article.image -%}
+                  <img src="{{ article.image | image_url: width: 640 }}" width="640" height="800" loading="lazy" alt="{{ article.image.alt | default: article.title | escape }}">
+                {%- else -%}
+                  {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </div>
+              <div class="card__info">
+                <p class="card__type">{{ article.published_at | date: '%b %d, %Y' }}</p>
+                <h3 class="card__title">{{ article.title | escape }}</h3>
+                {%- if article.excerpt != blank -%}
+                  <p class="collection-count">{{ article.excerpt | strip_html | truncatewords: 16 }}</p>
+                {%- endif -%}
+              </div>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="pagination" aria-label="{{ 'general.pagination.label' | t }}">
+          {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">{% render 'icon', icon: 'chevron-left' %}</a>{%- endif -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}<a href="{{ part.url }}">{{ part.title }}</a>{%- else -%}<span {% if part.title == paginate.current_page %}aria-current="page"{% endif %}>{{ part.title }}</span>{%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}<a href="{{ paginate.next.url }}">{% render 'icon', icon: 'chevron-right' %}</a>{%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- else -%}
+      <p class="lede">{{ 'blogs.general.no_articles' | t }}</p>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+{% schema %}
+{
+  "name": "Blog",
+  "settings": []
+}
+{% endschema %}

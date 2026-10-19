@@ -1,0 +1,68 @@
+{%- comment -%}
+  Renders a product card on grids.
+  Accepts: product, show_quick_add (default true), lazy (image loading)
+{%- endcomment -%}
+{%- liquid
+  assign quick_add = show_quick_add | default: true
+  assign lazy = lazy | default: true
+  assign ratio_class = ''
+  if settings.card_image_ratio == 'portrait'
+    assign ratio_class = 'card__media--portrait'
+  endif
+-%}
+{%- if product and product != blank -%}
+  <li class="card" data-reveal>
+    <a class="card__link" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+      <div class="card__media {{ ratio_class }}">
+        {%- if product.featured_media -%}
+          <img
+            src="{{ product.featured_media | image_url: width: 640 }}"
+            srcset="{{ product.featured_media | image_url: width: 360 }} 360w, {{ product.featured_media | image_url: width: 640 }} 640w, {{ product.featured_media | image_url: width: 960 }} 960w"
+            sizes="(min-width: 990px) 320px, 45vw"
+            width="640"
+            height="640"
+            loading="{% if lazy %}lazy{% else %}eager{% endif %}"
+            alt="{{ product.featured_media.alt | default: product.title | escape }}"
+          >
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+
+        {%- if product.available == false -%}
+          <span class="card__flag card__flag--soldout">{{ 'products.product.sold_out' | t }}</span>
+        {%- elsif product.compare_at_price > product.price -%}
+          <span class="card__flag card__flag--sale">{{ 'products.product.sale' | t }}</span>
+        {%- endif -%}
+      </div>
+
+      {%- if quick_add and product.available -%}
+        <div class="quick-add">
+          {%- if product.variants.size == 1 -%}
+            <form method="post" action="{{ routes.cart_add_url }}" data-quick-add>
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              <button type="submit" class="btn btn--primary btn--small">
+                {% render 'icon', icon: 'plus' %}
+                <span class="visually-hidden">{{ 'products.product.add_to_cart' | t }} — {{ product.title | escape }}</span>
+              </button>
+            </form>
+          {%- else -%}
+            <a href="{{ product.url }}" class="btn btn--primary btn--small">
+              {% render 'icon', icon: 'plus' %}
+              <span class="visually-hidden">{{ 'products.product.view_details' | t }} — {{ product.title | escape }}</span>
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </a>
+
+    <div class="card__info">
+      {%- if product.type != blank -%}
+        <p class="card__type">{{ product.type }}</p>
+      {%- elsif settings.card_show_vendor and product.vendor != blank -%}
+        <p class="card__type">{{ product.vendor }}</p>
+      {%- endif -%}
+      <h3 class="card__title"><a class="card__link" href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+      {% render 'price', product: product %}
+    </div>
+  </li>
+{%- endif -%}

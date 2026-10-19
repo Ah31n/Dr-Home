@@ -1,0 +1,50 @@
+<div class="search-page page-width">
+  <h1 class="h1" data-reveal>{{ 'general.search.title' | t }}</h1>
+
+  <form class="search-form" action="{{ routes.search_url }}" method="get" role="search" data-reveal>
+    <div class="field">
+      <label class="visually-hidden" for="SearchInput">{{ 'general.search.label' | t }}</label>
+      <input type="search" id="SearchInput" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}">
+    </div>
+    <button type="submit" class="btn btn--primary">{{ 'general.search.submit' | t }}</button>
+  </form>
+
+  {%- if search.performed -%}
+    {%- if search.results_count > 0 -%}
+      <p class="collection-count">{{ 'general.search.results_with_count' | t: count: search.results_count }}</p>
+      {%- paginate search.results by 12 -%}
+        <ul class="product-grid" style="margin-top: 22px;">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {% render 'product-card', product: item %}
+            {%- else -%}
+              <li class="card" data-reveal>
+                <a class="card__link" href="{{ item.url }}">
+                  <div class="card__media"><span style="padding: 24px; font-weight: 600;">{{ item.title | escape }}</span></div>
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+        {%- if paginate.pages > 1 -%}
+          <nav class="pagination" aria-label="{{ 'general.pagination.label' | t }}">
+            {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">{% render 'icon', icon: 'chevron-left' %}</a>{%- endif -%}
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}<a href="{{ part.url }}">{{ part.title }}</a>{%- else -%}<span {% if part.title == paginate.current_page %}aria-current="page"{% endif %}>{{ part.title }}</span>{%- endif -%}
+            {%- endfor -%}
+            {%- if paginate.next -%}<a href="{{ paginate.next.url }}">{% render 'icon', icon: 'chevron-right' %}</a>{%- endif -%}
+          </nav>
+        {%- endif -%}
+      {%- endpaginate -%}
+    {%- else -%}
+      <p class="lede">{{ 'general.search.no_results' | t: terms: search.terms }}</p>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Search",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,95 @@
+{%- comment -%}
+  Hero stage — the 3D-led opening composition.
+  The visual depth is pure CSS (layered gradients, arc, floor shadow, float);
+  the product image is the merchant's real Shopify media. A pointer tilt is
+  the only JS-driven motion and is disabled for reduced motion / coarse
+  pointers / when turned off in settings. Price + availability are live
+  Shopify data and are rendered server-side, never animated in.
+{%- endcomment -%}
+{%- liquid
+  assign stage_product = section.settings.product
+  assign stage_variant = stage_product.selected_or_first_available_variant
+-%}
+
+<section class="hero-stage">
+  <div class="page-width hero-stage__grid">
+    <div class="hero-stage__copy" data-reveal>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h1 class="h0">{{ section.settings.heading | escape }}</h1>
+      {%- if section.settings.text != blank -%}
+        <p class="lede">{{ section.settings.text | escape }}</p>
+      {%- endif -%}
+
+      <div class="hero-stage__actions">
+        {%- if section.settings.button_label != blank and stage_product != blank -%}
+          <a class="btn btn--primary" href="{{ stage_product.url }}">
+            {{ section.settings.button_label | escape }}
+            {% render 'icon', icon: 'arrow-right' %}
+          </a>
+        {%- elsif section.settings.button_label != blank -%}
+          <a class="btn btn--primary" href="{{ routes.all_products_collection_url }}">
+            {{ section.settings.button_label | escape }}
+            {% render 'icon', icon: 'arrow-right' %}
+          </a>
+        {%- endif -%}
+
+        {%- if stage_variant -%}
+          <span class="hero-stage__price-note">
+            {{ 'hero.badge_featured' | t }}: <strong>{{ stage_product.title | escape }}</strong>
+            &mdash; {% render 'price', product: stage_product, use_variant: true %}
+          </span>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if stage_product != blank -%}
+      <div class="stage{% if settings.motion_stage_tilt %} is-tiltable{% endif %}" data-stage data-reveal style="--reveal-delay: 120ms">
+        <div class="stage__scene" data-stage-scene>
+          <div class="stage__arc" aria-hidden="true"></div>
+          <div class="stage__floor" aria-hidden="true"></div>
+          <div class="stage__media">
+            {%- if stage_product.featured_media -%}
+              <img
+                src="{{ stage_product.featured_media | image_url: width: 900 }}"
+                srcset="{{ stage_product.featured_media | image_url: width: 600 }} 600w, {{ stage_product.featured_media | image_url: width: 900 }} 900w, {{ stage_product.featured_media | image_url: width: 1200 }} 1200w"
+                sizes="(min-width: 990px) 480px, 88vw"
+                width="900" height="900"
+                alt="{{ stage_product.featured_media.alt | default: stage_product.title | escape }}"
+                fetchpriority="high"
+              >
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+
+          {%- if section.settings.show_stage_badge -%}
+            <span class="stage__badge{% unless stage_variant.available %} is-sold-out{% endunless %}" data-reveal style="--reveal-delay: 300ms">
+              {% if stage_variant.available %}{{ 'products.product.in_stock' | t }}{% else %}{{ 'products.product.out_of_stock' | t }}{% endif %}
+            </span>
+          {%- endif -%}
+
+          {%- if stage_product.type != blank -%}
+            <span class="stage__caption">{{ stage_product.type | escape }}</span>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero stage",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "Appliances for modern living" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Everyday tools, presented with clarity." },
+    { "type": "text", "id": "text", "label": "Subheading", "default": "Live prices, honest product views, and a straightforward path to checkout." },
+    { "type": "product", "id": "product", "label": "Featured product" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop now" },
+    { "type": "checkbox", "id": "show_stage_badge", "label": "Show availability badge", "default": true }
+  ],
+  "presets": [{ "name": "Hero stage" }]
+}
+{% endschema %}

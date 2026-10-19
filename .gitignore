@@ -1,0 +1,7 @@
+# theme packages
+dist/
+*.zip
+
+# node
+node_modules/
+.DS_Store

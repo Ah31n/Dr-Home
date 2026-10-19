@@ -1,0 +1,55 @@
+<header class="site-header" data-sticky="{{ section.settings.sticky_header }}" data-header>
+  <div class="page-width site-header__inner">
+    <div class="site-header__left">
+      <details class="menu-drawer" data-menu-drawer>
+        <summary class="icon-btn" role="button" aria-label="{{ 'general.menu.open' | t }}">
+          {% render 'icon', icon: 'menu' %}
+        </summary>
+        <nav class="menu-drawer__panel" aria-label="{{ 'general.menu.open' | t }}">
+          {%- for link in section.settings.menu.links -%}
+            <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+          {%- endfor -%}
+        </nav>
+      </details>
+
+      <nav class="site-header__nav" aria-label="Primary">
+        {%- for link in section.settings.menu.links -%}
+          <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+        {%- endfor -%}
+      </nav>
+    </div>
+
+    <a href="{{ routes.root_url }}" class="site-header__logo" aria-label="{{ shop.name }} — {{ 'header.home_link' | t }}">
+      {%- if settings.logo != blank -%}
+        {{ settings.logo | image_url: width: 520 | image_tag: width: settings.logo_width, alt: shop.name }}
+      {%- else -%}
+        <span class="wordmark">{{ shop.name | split: ' ' | first }}<em>.</em><span class="wordmark__sub">{{ shop.name | split: ' ' | last | default: 'Home' }}</span></span>
+      {%- endif -%}
+    </a>
+
+    <div class="site-header__actions">
+      <a href="{{ routes.search_url }}" class="icon-btn" aria-label="{{ 'general.search.title' | t }}">
+        {% render 'icon', icon: 'search' %}
+      </a>
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="icon-btn" aria-label="{{ 'customer.account.title' | t }}">
+          {% render 'icon', icon: 'user' %}
+        </a>
+      {%- endif -%}
+      <a href="{{ routes.cart_url }}" class="icon-btn" data-cart-open aria-label="{{ 'header.cart_count' | t: count: cart.item_count }}">
+        {% render 'icon', icon: 'cart' %}
+        <span class="cart-count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "checkbox", "id": "sticky_header", "label": "Sticky header", "default": true }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,15 @@
+<div class="page-width section">
+  <header data-reveal>
+    <h1 class="h1">{{ page.title | escape }}</h1>
+  </header>
+  <div class="rte" data-reveal>
+    {{ page.content }}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Page",
+  "settings": []
+}
+{% endschema %}

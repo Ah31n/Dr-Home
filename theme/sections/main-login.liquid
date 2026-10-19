@@ -1,0 +1,71 @@
+<div class="page-width section" style="max-width: 460px;">
+  <h1 class="h1" data-reveal>{{ 'customer.login_page.title' | t }}</h1>
+
+  {%- if customer.reset_password_sent -%}
+    <div class="form-message form-message--success">{{ 'customer.recover_password.success' | t }}</div>
+  {%- endif -%}
+
+  {%- form 'customer_login', novalidate: 'novalidate' -%}
+    {%- if form.errors -%}
+      <div class="form-message form-message--error">{{ form.errors | default_errors }}</div>
+    {%- endif -%}
+    <div class="field">
+      <label for="CustomerEmail">{{ 'customer.login_page.email' | t }}</label>
+      <input type="email" id="CustomerEmail" name="customer[email]" autocomplete="email" required>
+    </div>
+    <div class="field">
+      <label for="CustomerPassword">{{ 'customer.login_page.password' | t }}</label>
+      <input type="password" id="CustomerPassword" name="customer[password]" autocomplete="current-password" required>
+    </div>
+    <button type="submit" class="btn btn--primary btn--full">{{ 'customer.login_page.sign_in' | t }}</button>
+  {%- endform -%}
+
+  <p style="margin-top: 18px;">
+    <a class="text-link" href="#recover" data-recover-toggle>{{ 'customer.login_page.forgot_password' | t }}</a>
+  </p>
+
+  <div id="recover" style="display: none; margin-top: 28px; border-top: 1px solid var(--color-line); padding-top: 24px;">
+    <h2 class="h3">{{ 'customer.recover_password.title' | t }}</h2>
+    <p class="lede">{{ 'customer.recover_password.subtext' | t }}</p>
+    {%- form 'recover_customer_password' -%}
+      {%- if form.errors -%}
+        <div class="form-message form-message--error">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+      <div class="field">
+        <label for="RecoverEmail">{{ 'customer.recover_password.email' | t }}</label>
+        <input type="email" id="RecoverEmail" name="email" autocomplete="email" required>
+      </div>
+      <button type="submit" class="btn btn--secondary">{{ 'customer.recover_password.submit' | t }}</button>
+    {%- endform -%}
+  </div>
+
+  {%- if shop.checkout.guest_login -%}
+    <div style="margin-top: 36px; border-top: 1px solid var(--color-line); padding-top: 24px;">
+      <h2 class="h3">{{ 'customer.login_page.guest_title' | t }}</h2>
+      {%- form 'guest_login' -%}
+        <button type="submit" class="btn btn--secondary">{{ 'customer.login_page.guest_continue' | t }}</button>
+      {%- endform -%}
+    </div>
+  {%- endif -%}
+
+  <p style="margin-top: 28px;">
+    {{ 'customer.login_page.create_account' | t }} &rarr; <a class="text-link" href="{{ routes.account_register_url }}">{{ 'customer.register.title' | t }}</a>
+  </p>
+</div>
+
+<script>
+  document.querySelectorAll('[data-recover-toggle]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      var panel = document.getElementById('recover');
+      panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Login",
+  "settings": []
+}
+{% endschema %}

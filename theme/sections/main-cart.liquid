@@ -1,0 +1,108 @@
+<div class="cart-page page-width">
+  <h1 class="h1" data-reveal>{{ 'cart.title' | t }}</h1>
+
+  {%- if cart.item_count > 0 -%}
+    <form method="post" action="{{ routes.cart_url }}" class="cart-page__grid" data-cart-form novalidate>
+      <div data-reveal>
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th scope="col">{{ 'cart.product' | t }}</th>
+              <th scope="col">{{ 'cart.quantity' | t }}</th>
+              <th scope="col" class="cart-right">{{ 'cart.total' | t }}</th>
+              <th scope="col"><span class="visually-hidden">{{ 'cart.remove' | t }}</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for item in cart.items -%}
+              <tr data-cart-item data-line="{{ forloop.index }}">
+                <td>
+                  <div class="cart-item">
+                    <a class="cart-item__media" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
+                      {%- if item.image -%}
+                        <img src="{{ item.image | image_url: width: 184 }}" width="92" height="92" loading="lazy" alt="">
+                      {%- else -%}
+                        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                      {%- endif -%}
+                    </a>
+                    <div>
+                      <a class="cart-item__title" href="{{ item.url }}">{{ item.product.title | escape }}</a>
+                      {%- unless item.product.has_only_default_variant -%}
+                        <p class="cart-item__meta">{{ item.variant.title }}</p>
+                      {%- endunless -%}
+                      {%- if item.selling_plan_allocation -%}
+                        <p class="cart-item__meta">{{ item.selling_plan_allocation.selling_plan.name }}</p>
+                      {%- endif -%}
+                      <p class="cart-item__meta">{{ item.final_price | money }}</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  {% render 'quantity-input', product: item.product, name: 'updates[]', value: item.quantity %}
+                </td>
+                <td class="cart-right"><strong>{{ item.final_line_price | money }}</strong></td>
+                <td>
+                  <button type="submit" name="update" class="cart-item__remove" value="{{ forloop.index }}" aria-label="{{ 'cart.remove' | t }}: {{ item.product.title | escape }}" formaction="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0">
+                    {% render 'icon', icon: 'trash' %}
+                  </button>
+                </td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cart-summary" data-reveal style="--reveal-delay: 100ms">
+        <div class="cart-summary__row">
+          <span>{{ 'cart.subtotal' | t }}</span>
+          <strong data-cart-subtotal>{{ cart.total_price | money }}</strong>
+        </div>
+
+        {%- if settings.cart_show_note -%}
+          <div class="field">
+            <label for="CartNote">{{ 'cart.note' | t }}</label>
+            <textarea id="CartNote" name="note" placeholder="{{ 'cart.note_placeholder' | t }}">{{ cart.note }}</textarea>
+          </div>
+        {%- endif -%}
+
+        <button type="submit" name="checkout" class="btn btn--accent btn--full">{{ 'cart.checkout' | t }}</button>
+        <p class="cart-summary__note">{{ 'cart.taxes_and_shipping' | t }}</p>
+        <noscript>
+          <button type="submit" name="update" class="btn btn--secondary btn--full" style="margin-top: 10px;">{{ 'cart.update' | t }}</button>
+        </noscript>
+      </div>
+    </form>
+  {%- else -%}
+    <div class="cart-empty" data-reveal>
+      <p class="h2">{{ 'cart.empty_title' | t }}</p>
+      <p class="lede">{{ 'cart.empty_text' | t }}</p>
+      <a class="btn btn--primary" href="{{ routes.all_products_collection_url }}">{{ 'cart.continue_shopping' | t }}</a>
+    </div>
+
+    {%- if section.settings.show_recommendations and section.settings.recommendations_collection != blank -%}
+      {%- assign picks = collections[section.settings.recommendations_collection] -%}
+      {%- if picks.products.size > 0 -%}
+        <div class="section">
+          <div class="section-head" data-reveal>
+            <h2 class="h2">{{ picks.title | escape }}</h2>
+          </div>
+          <ul class="product-grid">
+            {%- for product in picks.products limit: 4 -%}
+              {% render 'product-card', product: product %}
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Cart page",
+  "settings": [
+    { "type": "checkbox", "id": "show_recommendations", "label": "Show products when cart is empty", "default": true },
+    { "type": "collection", "id": "recommendations_collection", "label": "Collection for picks" }
+  ]
+}
+{% endschema %}

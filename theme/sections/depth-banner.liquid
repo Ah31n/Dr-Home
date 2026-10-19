@@ -1,0 +1,45 @@
+<section class="section">
+  <div class="page-width">
+    <div class="depth-banner" data-reveal>
+      <div class="depth-banner__media" aria-hidden="true">
+        {%- if section.settings.image -%}
+          <img
+            src="{{ section.settings.image | image_url: width: 1600 }}"
+            srcset="{{ section.settings.image | image_url: width: 800 }} 800w, {{ section.settings.image | image_url: width: 1600 }} 1600w"
+            sizes="100vw"
+            width="1600" height="900"
+            loading="lazy"
+            alt="">
+        {%- endif -%}
+        <div class="depth-banner__scrim"></div>
+      </div>
+      <div class="depth-banner__content">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 class="h1">{{ section.settings.heading | escape }}</h2>
+        {%- if section.settings.text != blank -%}
+          <p class="lede">{{ section.settings.text | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.button_label != blank -%}
+          <a class="btn btn--primary" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Depth banner",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "Garment care" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Tools that earn their place." },
+    { "type": "text", "id": "text", "label": "Text", "default": "A tight, deliberate range — nothing more than what a home actually uses." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "Depth banner" }]
+}
+{% endschema %}

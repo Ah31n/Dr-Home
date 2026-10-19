@@ -1,0 +1,118 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_background }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{% endif -%}
+      {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {%- comment -%} Preconnects only to first-party origins by default; model-viewer script is loaded lazily and only on product pages that actually have 3D media. {%- endcomment -%}
+
+    {{ content_for_header }}
+
+    {%- liquid
+      assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
+    -%}
+
+    <style>
+      :root {
+        --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+        --font-body-style: {{ settings.type_body_font.style }};
+        --font-body-weight: {{ settings.type_body_font.weight }};
+        --font-body-weight-bold: {{ body_font_bold.weight | default: 700 }};
+        --font-heading-family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+        --font-heading-style: {{ settings.type_heading_font.style }};
+        --font-heading-weight: {{ settings.type_heading_font.weight }};
+
+        --color-background: {{ settings.color_background }};
+        --color-surface: {{ settings.color_surface }};
+        --color-ink: {{ settings.color_ink }};
+        --color-ink-soft: {{ settings.color_ink | color_mix: settings.color_background, 72 }};
+        --color-line: {{ settings.color_ink | color_mix: settings.color_background, 14 }};
+        --color-accent: {{ settings.color_accent }};
+        --color-accent-ink: {{ settings.color_accent | color_lighten: 62 }};
+        --color-sale: {{ settings.color_sale }};
+
+        --page-width: {{ settings.page_width }}px;
+        --section-spacing: {{ settings.section_spacing }}px;
+        --radius-card: 18px;
+        --radius-pill: 999px;
+        --shadow-soft: 0 1px 2px rgb(23 21 18 / 0.05), 0 12px 32px -12px rgb(23 21 18 / 0.18);
+        --shadow-lift: 0 2px 4px rgb(23 21 18 / 0.06), 0 24px 48px -16px rgb(23 21 18 / 0.28);
+        --duration-fast: 160ms;
+        --duration-base: 320ms;
+        --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+    </style>
+
+    {{ 'base.css' | stylesheet_tag }}
+    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+    <script>
+      document.documentElement.classList.replace('no-js', 'js');
+
+      window.ShopifyRoutes = { root: {{ routes.root_url | json }} };
+      window.ShopifyStrings = {
+        adding: {{ 'products.product.adding' | t | json }},
+        added: {{ 'products.product.added' | t | json }},
+        cartError: {{ 'cart.generic_error' | t | json }},
+        cartUpdated: {{ 'cart.update' | t | json }},
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        inStock: {{ 'products.product.in_stock' | t | json }},
+        outOfStock: {{ 'products.product.out_of_stock' | t | json }},
+        autoRotate: {{ 'products.product.media_3d_autorotate' | t | json }},
+        pauseRotation: {{ 'products.product.media_3d_pause' | t | json }},
+        resetView: {{ 'products.product.media_3d_reset' | t | json }},
+        load3d: {{ 'products.product.media_3d_load' | t | json }}
+      };
+
+      /* Live money formatting that mirrors the store's own money format. */
+      window.ShopifyMoney = (function () {
+        var format = {{ shop.money_format | json }};
+        return function (cents) {
+          var value = (Number(cents) || 0) / 100;
+          if (format.indexOf('amount_no_decimals') !== -1) {
+            return format.replace(/\{\{\s*amount_no_decimals\s*\}\}/, Math.round(value).toLocaleString());
+          }
+          return format.replace(/\{\{\s*amount\s*\}\}/, value.toFixed(2));
+        };
+      })();
+    </script>
+  </head>
+
+  <body class="template-{{ request.page_type | handle }}"
+    data-motion="{{ settings.motion_reveal_enabled }}"
+    data-cart-drawer="{{ settings.cart_drawer_enabled }}">
+    <a class="skip-link visually-hidden-up" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
+
+    {% sections 'header-group' %}
+
+    <main id="MainContent" class="content-for-layout" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    {%- if settings.cart_drawer_enabled -%}
+      {% render 'cart-drawer' %}
+    {%- endif -%}
+
+    <div class="visually-hidden" aria-live="polite" data-cart-status></div>
+  </body>
+</html>

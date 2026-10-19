@@ -1,0 +1,67 @@
+<div class="page-width section">
+  <h1 class="h1" data-reveal>{{ 'customer.account.title' | t }}</h1>
+  <p data-reveal>{{ customer.email }} &middot;
+    <a href="{{ routes.account_addresses_url }}">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a> &middot;
+    <a href="{{ routes.account_logout_url }}">{{ 'customer.account.logout' | t }}</a>
+  </p>
+
+  <div class="cart-page__grid">
+    <div data-reveal>
+      <h2 class="h2">{{ 'customer.account.orders' | t }}</h2>
+      {%- paginate customer.orders by 10 -%}
+        {%- if customer.orders.size > 0 -%}
+          <table class="cart-table">
+            <thead>
+              <tr>
+                <th scope="col">{{ 'customer.orders.order_number' | t }}</th>
+                <th scope="col">{{ 'customer.orders.date' | t }}</th>
+                <th scope="col">{{ 'customer.orders.payment_status' | t }}</th>
+                <th scope="col">{{ 'customer.orders.fulfillment_status' | t }}</th>
+                <th scope="col" class="cart-right">{{ 'customer.orders.total' | t }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for order in customer.orders -%}
+                <tr>
+                  <td><a class="text-link" href="{{ order.customer_url }}">{{ order.name }}</a></td>
+                  <td>{{ order.created_at | date: '%b %d, %Y' }}</td>
+                  <td>{{ order.financial_status_label }}</td>
+                  <td>{{ order.fulfillment_status_label }}</td>
+                  <td class="cart-right"><strong>{{ order.total_price | money }}</strong></td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+          {%- if paginate.pages > 1 -%}
+            <nav class="pagination">
+              {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">{% render 'icon', icon: 'chevron-left' %}</a>{%- endif -%}
+              {%- for part in paginate.parts -%}
+                {%- if part.is_link -%}<a href="{{ part.url }}">{{ part.title }}</a>{%- else -%}<span {% if part.title == paginate.current_page %}aria-current="page"{% endif %}>{{ part.title }}</span>{%- endif -%}
+              {%- endfor -%}
+              {%- if paginate.next -%}<a href="{{ paginate.next.url }}">{% render 'icon', icon: 'chevron-right' %}</a>{%- endif -%}
+            </nav>
+          {%- endif -%}
+        {%- else -%}
+          <p class="lede">{{ 'customer.account.no_orders' | t }}</p>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+
+    <div class="cart-summary" data-reveal>
+      <h2 class="h3">{{ 'customer.account.details' | t }}</h2>
+      <p>{{ customer.name | default: customer.email }}</p>
+      {%- if customer.default_address -%}
+        <div class="rte">
+          {{ customer.default_address | format_address }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Account",
+  "settings": []
+}
+{% endschema %}
